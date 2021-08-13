@@ -70,7 +70,7 @@ class Game:
     def game_run(self):
         self.display_board()
         while not self.lost:
-            sleep(0.1)
+            sleep(0.08)
             system("clear")
             self.update_board()
             self.check_move()
@@ -136,6 +136,7 @@ class Game:
             self.append_body_snake(self.food_xy)
             self.generate_food()
             self.score += 1
+        self.snake_on_snake()
 
     def append_body_snake(self, position):
         if self.key_pressed == "'a'":
@@ -147,6 +148,14 @@ class Game:
         if self.key_pressed == "'s'":
             self.snake_body.appendleft((position[0] - len(self.snake_body), position[1]))
 
+    def snake_on_snake(self):
+        copy_body_snake = self.snake_body.copy()
+        while len(copy_body_snake) != 1:
+            first = copy_body_snake.popleft()
+            if first in copy_body_snake:
+                lost_game()
+                self.lost = True
+            
 
     
 
