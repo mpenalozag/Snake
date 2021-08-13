@@ -18,6 +18,7 @@ class Game:
 
         #GAME
         self.lost = False
+        self.time = 0
 
         #SNAKE 
         self.snake = "🟩"
@@ -32,6 +33,13 @@ class Game:
         #THREADS
         self.game_thread = Thread(target=self.game_run)
         self.move_thread = Thread(target=self.move_snake)
+        self.time_thread = Thread(target=self.count_time)
+
+    def count_time(self):
+        while True:
+            sleep(1)
+            self.time +=1
+
 
     def set_coords(self):
         for x in range(1, self.x_size + 1):
@@ -54,7 +62,7 @@ class Game:
         self.display_map()
         
     def display_score(self):
-        print(f"SCORE: {self.score}                       S N A K E        ")
+        print(f"SCORE: {self.score}                       S N A K E              TIME: {self.time//60}:{self.time%60}")
 
     def display_map(self):
         for x in range(1, self.x_size + 1):
@@ -110,11 +118,11 @@ class Game:
         elif change == 'down':
             self.snake_body[-1] = (position_x + 1, position_y)
             self.coordinates[(position_x + 1, position_y)] = self.snake
-        
 
     def start_game(self):
         self.game_thread.start()
         self.move_thread.start()
+        self.time_thread.start()
 
     def generate_food(self):
         x = random.randint(2, self.x_size - 1)
@@ -158,9 +166,6 @@ class Game:
             
 
     
-
-
-
 if __name__ == '__main__':
     my_game = Game()
     my_game.start_game()
