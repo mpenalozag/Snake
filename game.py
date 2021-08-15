@@ -15,6 +15,7 @@ class Game:
         self.coordinates = dict()
         self.set_coords()        
         self.key_pressed = "'d'"
+        self.last_key_pressed = "'d'"
 
         #GAME
         self.lost = False
@@ -90,14 +91,32 @@ class Game:
                 self.key_pressed = repr(e)
 
     def check_move(self):
+        print(self.key_pressed)
+        print(self.last_key_pressed)
         if self.key_pressed == "'a'":
-            self.move_snake_body('left')
+            if not self.last_key_pressed == "'d'":
+                self.move_snake_body('left')
+                self.last_key_pressed = "'a'"
+            else:
+                self.move_snake_body('right')
         if self.key_pressed == "'d'":
-            self.move_snake_body('right')
+            if not self.last_key_pressed == "'a'":
+                self.move_snake_body('right')
+                self.last_key_pressed = "'d'"
+            else:
+                self.move_snake_body('left')
         if self.key_pressed == "'w'":
-            self.move_snake_body('up')
+            if not self.last_key_pressed == "'s'":
+                self.move_snake_body('up')
+                self.last_key_pressed = "'w'"
+            else:
+                self.move_snake_body('down')
         if self.key_pressed == "'s'":
-            self.move_snake_body('down')
+            if not self.last_key_pressed == "'w'":
+                self.move_snake_body('down')
+                self.last_key_pressed = "'s'"
+            else:
+                self.move_snake_body('up')
 
     def move_snake_body(self, change):
         self.coordinates[self.snake_body[0]] = "  "
